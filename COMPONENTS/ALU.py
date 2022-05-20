@@ -1,57 +1,66 @@
 from COMPONENTS.ACCUMULATOR import *
 from COMPONENTS.RAM import *
-RAM = RAM()
+from COMPONENTS.PC import *
+
 class ALU:
 
-    def operations(self, hex_op, memAdress, value, ACC):
+    def operations(self, hex_op, memAdress, value, ACC , RAM, PC):
         if hex_op == '0x0':
-            #brz gelcek
-            return
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
+            if(ACC.getAccVal() == 0):
+                ACC.BRZ(value, PC)
+            else:
+                return
         elif hex_op == '0x1':
-            #BRN GELCEK
-            return
+            self.showcurrent(hex_op, memAdress, value, ACC, RAM, PC)
+            if (ACC.getAccVal() < 0):
+                ACC.BRN(value, PC)
+            else:
+                return
         elif hex_op == '0x2':
-            ACC.LDI(value)
-
+            ACC.LDI(int(memAdress))
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0x3':
-            ACC.LDM(memAdress)
-
+            ACC.LDM(memAdress, hex_op,RAM)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0x4':
-            RAM.STR(memAdress, value)
-            return
+            RAM.STR(memAdress, ACC.getAccVal())
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0x5':
-            #ADD gelcek
-            return
+            ACC.ADD(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0x6':
-            #SUB gelcek
-            return
+            ACC.SUB(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0x7':
-            #MUL gelcek
-            return
+            ACC.MUL(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0x8':
-            #DIV gelcek
-            return
+            ACC.DIV(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0x9':
-            #NEG gelcek
-            return
+            ACC.NEG()
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0xa':
-            #LSL gelcek
-            return
+            ACC.LSL(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0xb':
-            #LSR gelcek
-            return
+            ACC.LSR(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0xc':
-            #XOR gelcek
-            return
+            ACC.XOR(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0xd':
-            #NOT gelcek
-            return
+            ACC.NOT()
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0xe':
-            #AND gelcek
-            return
+            ACC.AND(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         elif hex_op == '0xf':
-            #ORR gelcek
-            return
+            ACC.ORR(value)
+            self.showcurrent(hex_op, memAdress, value, ACC , RAM, PC)
         else:
             print("Error")
             return
+    def showcurrent(self,hex_op, memAdress, value, ACC , RAM, PC):
+        print("PC = ", PC.getPC(), " ve  ACC = ", ACC.getAccVal(), "mem_str = ", hex_op)
